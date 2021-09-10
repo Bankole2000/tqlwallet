@@ -1,0 +1,77 @@
+<template>
+  <div class="activity-card">
+    <v-hover v-slot:default="{ hover }">
+      <v-card
+        style="transition: all 0.3s ease"
+        tile
+        class="pl-4 pr-2 pt-2 pb-0"
+        :elevation="hover ? 4 : 1"
+      >
+        <v-card-title style="display: flex" class="pb-0">
+          <h2>
+            {{ user.balance | formatNumber }}
+            <!-- <small class="font-weight-light"
+              >(12%<v-icon class="pb-1">mdi-arrow-up-thick</v-icon>)</small
+            > -->
+          </h2>
+          <v-spacer></v-spacer>
+          <!-- <v-btn large icon><v-icon>mdi-dots-vertical</v-icon></v-btn> -->
+        </v-card-title>
+        <h3 class="px-4">A/C Balance</h3>
+        <v-card-text>
+          <v-sparkline
+            :value="value"
+            :gradient="gradient"
+            :smooth="radius || false"
+            :padding="padding"
+            :line-width="width"
+            :stroke-linecap="lineCap"
+            :gradient-direction="gradientDirection"
+            :fill="fill"
+            :type="type"
+            :auto-line-width="autoLineWidth"
+            auto-draw
+          ></v-sparkline>
+        </v-card-text>
+      </v-card>
+    </v-hover>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from "vuex";
+
+const gradients = [
+  ["#222"],
+  ["#42b3f4"],
+  ["red", "orange", "yellow"],
+  ["purple", "violet"],
+  ["#00c6ff", "#F0F", "#FF0"],
+  ["#f72047", "#ffd200", "#1feaea"],
+];
+export default {
+  data() {
+    return {
+      width: 2,
+      radius: 10,
+      padding: 8,
+      lineCap: "round",
+      gradient: gradients[5],
+      value: [0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0],
+      gradientDirection: "top",
+      gradients,
+      fill: false,
+      type: "trend",
+      autoLineWidth: false,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      user: "user/user",
+    }),
+  },
+};
+</script>
+
+<style>
+</style>
