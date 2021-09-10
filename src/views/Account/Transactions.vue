@@ -47,6 +47,7 @@
           <v-btn
             @click="filterActivities"
             block
+            :disabled="!from"
             class="primary sharp text-capitalize"
             x-large
             ><v-icon left>mdi-filter-variant</v-icon>Filter by time</v-btn

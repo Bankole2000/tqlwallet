@@ -38,7 +38,20 @@
 </template>
 
 <script>
-export default {};
+import { mapActions } from "vuex";
+export default {
+  methods: {
+    ...mapActions({
+      verifyToken: "user/verifyToken",
+    }),
+  },
+  async mounted() {
+    const { error } = await this.verifyToken();
+    if (!error) {
+      this.$router.push({ name: "account.dashboard" });
+    }
+  },
+};
 </script>
 
 <style>

@@ -7,10 +7,9 @@ export default {
 
       commit('SET_TOKEN', data.userToken)
       localStorage.setItem('tqlWalletAppUserState', data.status)
-      // if (payload.rememberMe) {
-
-      localStorage.setItem('tqlWalletAppToken', data.userToken);
-      // }
+      if (payload.rememberMe) {
+        localStorage.setItem('tqlWalletAppToken', data.userToken);
+      }
       delete data.userToken;
       delete data.password;
       commit('SET_USER', data)
@@ -59,11 +58,22 @@ export default {
     return { data, error, message };
   },
   async verifyToken({ commit, state }) {
-    const res = await API.User.verifyToken(state.token)
+    const existingToken = localStorage.getItem('tqlWalletAppToken')
+    const res = await API.User.verifyToken(state.token || existingToken)
     const { data, error, message } = await res.json();
-
-    commit('SET_USER', data);
-
+    if (!error) {
+      commit('SET_USER', data);
+      if (existingToken) {
+        commit('SET_TOKEN', existingToken);
+      } else {
+        commit('SET_TOKEN', state.token);
+      }
+    } else {
+      localStorage.removeItem('tqlWalletAppToken');
+      localStorage.removeItem('tqlWalletAppUserState');
+      commit('SET_USER', null);
+      commit('SET_TOKEN', null);
+    }
     return { data, error, message };
   }
 }

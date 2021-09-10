@@ -111,7 +111,7 @@
                 :to="{ name: 'auth.login' }"
                 color="primary"
                 class="sharp font-weight-bold mx-1 text-capitalize"
-                >Login</v-btn
+                ><v-icon left>mdi-login-variant</v-icon> Login</v-btn
               >
               <v-btn
                 v-if="!user"
@@ -127,7 +127,7 @@
                   lighten-3
                   text-capitalize
                 "
-                >Sign Up</v-btn
+                ><v-icon left>mdi-account-plus-outline</v-icon> Sign Up</v-btn
               >
             </div>
           </v-row>
