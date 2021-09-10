@@ -5,6 +5,9 @@
         <v-col cols="12" class="py-0" md="6">
           <v-text-field
             class="sharp"
+            :dense="$vuetify.breakpoint.xs"
+            :hide-details="$vuetify.breakpoint.xs"
+            :class="{ 'my-2': $vuetify.breakpoint.xs }"
             label="Country"
             prepend-inner-icon="mdi-flag"
             outlined
@@ -16,6 +19,9 @@
         <v-col cols="12" class="py-0" md="6">
           <v-text-field
             class="sharp"
+            :dense="$vuetify.breakpoint.xs"
+            :hide-details="$vuetify.breakpoint.xs"
+            :class="{ 'my-2': $vuetify.breakpoint.xs }"
             outlined
             type="text"
             :rules="[rules.required]"
@@ -27,6 +33,9 @@
         <v-col cols="12" class="py-0" md="6">
           <v-text-field
             class="sharp"
+            :dense="$vuetify.breakpoint.xs"
+            :hide-details="$vuetify.breakpoint.xs"
+            :class="{ 'my-2': $vuetify.breakpoint.xs }"
             outlined
             type="text"
             :rules="[rules.required]"
@@ -38,6 +47,9 @@
         <v-col cols="12" class="py-0" md="6">
           <v-text-field
             class="sharp"
+            :dense="$vuetify.breakpoint.xs"
+            :hide-details="$vuetify.breakpoint.xs"
+            :class="{ 'my-2': $vuetify.breakpoint.xs }"
             outlined
             type="text"
             prepend-inner-icon="mdi-map-marker-circle"
@@ -48,6 +60,9 @@
         <v-col cols="12" class="py-0">
           <v-text-field
             class="sharp"
+            :dense="$vuetify.breakpoint.xs"
+            :hide-details="$vuetify.breakpoint.xs"
+            :class="{ 'my-2': $vuetify.breakpoint.xs }"
             outlined
             type="text"
             :rules="[rules.required]"

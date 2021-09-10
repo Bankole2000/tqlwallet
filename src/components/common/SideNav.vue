@@ -41,6 +41,7 @@
           @click="updateProfile"
           class="sharp primary white--text my-4"
           depressed
+          large
           block
         >
           <v-icon left>mdi-account-check-outline</v-icon>
@@ -50,6 +51,7 @@
           @click="userLogout"
           class="sharp accent white--text"
           depressed
+          large
           block
         >
           <v-icon left>mdi-logout-variant</v-icon>

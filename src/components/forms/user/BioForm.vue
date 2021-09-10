@@ -5,6 +5,9 @@
         <v-col cols="12">
           <v-text-field
             class="sharp"
+            :dense="$vuetify.breakpoint.xs"
+            :hide-details="$vuetify.breakpoint.xs"
+            :class="{ 'my-4': $vuetify.breakpoint.xs }"
             label="First Name"
             prepend-inner-icon="mdi-account-outline"
             outlined
@@ -14,6 +17,9 @@
           ></v-text-field>
           <v-text-field
             class="sharp"
+            :dense="$vuetify.breakpoint.xs"
+            :hide-details="$vuetify.breakpoint.xs"
+            :class="{ 'my-4': $vuetify.breakpoint.xs }"
             outlined
             type="text"
             :rules="[rules.required]"
@@ -26,6 +32,9 @@
               genderIcons[gender] ? genderIcons[gender] : genderIcons['else']
             "
             :items="genderOptions"
+            :dense="$vuetify.breakpoint.xs"
+            :hide-details="$vuetify.breakpoint.xs"
+            :class="{ 'my-4': $vuetify.breakpoint.xs }"
             v-model="gender"
             :rules="[rules.required]"
             label="Gender"

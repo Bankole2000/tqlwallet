@@ -85,6 +85,18 @@
               >
               <v-btn
                 v-if="user"
+                @click="showDialog('onboarding', true)"
+                color="secondary"
+                text
+                class="sharp white--text my-4 text-capitalize"
+                depressed
+                large
+              >
+                <v-icon left>mdi-account-check-outline</v-icon>
+                profile</v-btn
+              >
+              <v-btn
+                v-if="user"
                 large
                 text
                 @click="logout"
@@ -121,13 +133,16 @@
           </v-row>
         </v-container>
       </div>
+      <Onboarding ref="onboarding" />
     </v-app-bar>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import Onboarding from "../modals/Onboarding.vue";
 export default {
+  components: { Onboarding },
   computed: {
     ...mapGetters({
       user: "user/user",
@@ -148,6 +163,10 @@ export default {
         sclass: "info",
         timeout: 3000,
       });
+    },
+    showDialog(ref, value) {
+      const dialog = this.$refs[ref];
+      dialog.showDialog(value);
     },
   },
   // mounted() {

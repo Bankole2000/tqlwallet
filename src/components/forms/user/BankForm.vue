@@ -4,6 +4,9 @@
       <v-row>
         <v-col cols="12">
           <v-text-field
+            :dense="$vuetify.breakpoint.xs"
+            :hide-details="$vuetify.breakpoint.xs"
+            :class="{ 'my-4': $vuetify.breakpoint.xs }"
             class="sharp"
             label="Bank Name"
             prepend-inner-icon="mdi-bank"
@@ -13,6 +16,9 @@
             v-model="bank"
           ></v-text-field>
           <v-text-field
+            :dense="$vuetify.breakpoint.xs"
+            :hide-details="$vuetify.breakpoint.xs"
+            :class="{ 'my-4': $vuetify.breakpoint.xs }"
             class="sharp"
             outlined
             type="text"
@@ -22,6 +28,9 @@
             v-model="accountNo"
           ></v-text-field>
           <v-text-field
+            :dense="$vuetify.breakpoint.xs"
+            :hide-details="$vuetify.breakpoint.xs"
+            :class="{ 'my-4': $vuetify.breakpoint.xs }"
             class="sharp"
             outlined
             type="text"
@@ -46,6 +55,7 @@
             <v-btn
               text
               large
+              :loading="isLoading"
               class="sharp"
               color="primary"
               @click="$emit('back')"
@@ -74,6 +84,7 @@ export default {
       },
       isValid: false,
       bvn: null,
+      isLoading: false,
     };
   },
   computed: {
@@ -107,6 +118,7 @@ export default {
       setUserField: "user/setUserField",
     }),
     submit() {
+      this.isLoading = true;
       this.$refs.form.validate();
       if (this.isValid) {
         const { bank, accountNo, bvn } = this;
@@ -114,6 +126,7 @@ export default {
       } else {
         console.log("Form is Invalid");
       }
+      this.isLoading = false;
     },
   },
   mounted() {

@@ -64,14 +64,14 @@ export default {
       }
     },
   },
-  dispatch(actionName, payload) {
+  async dispatch(actionName, payload) {
     const actions = this.transitions[this.state];
 
     const action = actions[actionName];
     console.log({ actionName, payload });
 
     if (action) {
-      action.call(this, payload);
+      await action.call(this, payload);
     } else {
       console.log("No such action on state machine");
     }

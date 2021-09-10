@@ -26,7 +26,10 @@
                 width="320"
                 class="mx-auto"
               ></v-img>
-              <p class="headline mt-6 px-16">
+              <p
+                class="headline mt-6"
+                :class="$vuetify.breakpoint.xs ? 'px-0' : 'px-16'"
+              >
                 Complete your profile to Verify your Account.
               </p>
               <v-divider></v-divider>
@@ -50,7 +53,7 @@
               </p>
               <v-img
                 :src="require('@/assets/img/bio.svg')"
-                width="300"
+                :width="$vuetify.breakpoint.xs ? '200' : '300'"
                 class="mx-auto mb-4"
               ></v-img>
               <BioForm
@@ -62,13 +65,13 @@
           <v-window-item :value="3">
             <v-card-text class="px-8 pt-4 pb-8 text-center">
               <p class="font-weight-black black--text display-1">
-                Update Location Data
+                Update Location
               </p>
               <v-img
                 :src="require('@/assets/img/location.svg')"
-                width="180"
+                :width="$vuetify.breakpoint.xs ? '50' : '180'"
                 :aspect-ratio="1"
-                height="180"
+                :height="$vuetify.breakpoint.xs ? '50' : '180'"
                 class="mx-auto mb-8"
               ></v-img>
               <LocationForm
@@ -84,7 +87,7 @@
               </p>
               <v-img
                 :src="require('@/assets/img/bank.svg')"
-                width="300"
+                :width="$vuetify.breakpoint.xs ? '100' : '300'"
                 class="mx-auto mb-8"
               ></v-img>
               <BankForm
@@ -129,6 +132,20 @@
             </v-card-text>
           </v-window-item>
         </v-window>
+        <v-overlay
+          :value="isLoading"
+          absolute
+          align="center"
+          justify="center"
+          color="primary"
+        >
+          <v-progress-circular
+            :size="70"
+            :width="7"
+            color="secondary"
+            indeterminate
+          ></v-progress-circular>
+        </v-overlay>
       </v-card>
     </v-dialog>
   </div>
@@ -151,6 +168,7 @@ export default {
       dialog: false,
       step: 0,
       profileMachine,
+      isLoading: false,
     };
   },
   watch: {
@@ -180,11 +198,12 @@ export default {
       profileMachine.dispatch("start");
     },
     async updateProfile(e, action) {
-      this.showGlobalLoader({ show: true, message: "Updating Profile" });
+      this.isLoading = true;
       console.log({ e, action });
       console.log({ profileMachine });
-      await profileMachine.dispatch(action, e);
-      this.showGlobalLoader({ show: false, message: "" });
+      await profileMachine.dispatch(action, e).then(() => {
+        this.isLoading = false;
+      });
     },
   },
   created() {
