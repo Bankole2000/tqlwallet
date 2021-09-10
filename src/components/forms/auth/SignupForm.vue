@@ -1,6 +1,6 @@
 <template>
   <div class="signup-form">
-    <v-container class="px-16">
+    <v-container :class="$vuetify.breakpoint.xs ? 'px-4' : 'px-16'">
       <v-row>
         <v-col cols="12">
           <v-form ref="form" @submit.prevent="submit" v-model="isValid">

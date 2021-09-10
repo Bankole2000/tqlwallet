@@ -12,5 +12,5 @@ git config user.email "techybanky@gmail.com"
 git config user.name "Bankole Esan"
 git add -A
 git commit -m "deploy"
-git push -f https://github.com/Bankole2000/webpieces.git master:gh-pages
+git push -f https://github.com/Bankole2000/tqlwallet.git master:gh-pages
 cd -
