@@ -40,11 +40,7 @@
                 {{ txnType }} - {{ amount | formatNumber }}
               </p>
               <v-spacer></v-spacer>
-              <v-btn
-                type="submit"
-                :disabled="!isValid"
-                x-large
-                class="sharp primary white--text"
+              <v-btn type="submit" x-large class="sharp primary white--text"
                 >Confirm &nbsp;<span>{{ txnType }}</span>
                 <v-icon right>mdi-chevron-double-right</v-icon></v-btn
               >
@@ -82,8 +78,17 @@ export default {
       getTransactions: "transactions/getUserTransactions",
     }),
     async submit() {
-      this.showGlobalLoader({ show: true, message: `Making ${this.txnType}` });
       this.$refs.form.validate();
+      if (!this.isValid) {
+        this.showToast({
+          show: "true",
+          message: "Invalid Data",
+          sclass: "warning",
+          timeout: 3000,
+        });
+        return;
+      }
+      this.showGlobalLoader({ show: true, message: `Making ${this.txnType}` });
       let { amount, description } = this;
       if (this.txnType !== "deposit") {
         amount *= -1;
