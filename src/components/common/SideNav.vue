@@ -1,6 +1,11 @@
 <template>
   <div class="mobile-side-nav">
-    <v-navigation-drawer v-model="pageNav.show" temporary app>
+    <v-navigation-drawer
+      v-model="pageNav.show"
+      v-if="!$vuetify.breakpoint.mdAndUp"
+      temporary
+      app
+    >
       <v-list-item style="height: 90px">
         <v-list-item-avatar tile>
           <img :src="require('@/assets/img/logo.png')" />
@@ -31,26 +36,39 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-      <template v-slot:append v-if="user">
-        <div class="pa-2">
-          <v-btn
-            @click="userLogout"
-            class="sharp accent white--text"
-            depressed
-            block
-          >
-            <v-icon left>mdi-logout-variant</v-icon>
-            Logout</v-btn
-          >
-        </div>
-      </template>
+      <div class="pa-2" v-if="user">
+        <v-btn
+          @click="updateProfile"
+          class="sharp primary white--text my-4"
+          depressed
+          block
+        >
+          <v-icon left>mdi-account-check-outline</v-icon>
+          profile</v-btn
+        >
+        <v-btn
+          @click="userLogout"
+          class="sharp accent white--text"
+          depressed
+          block
+        >
+          <v-icon left>mdi-logout-variant</v-icon>
+          Logout</v-btn
+        >
+      </div>
+      <!-- <template v-slot:append v-if="user">
+        
+      </template> -->
+      <Onboarding ref="onboarding" />
     </v-navigation-drawer>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import Onboarding from "../modals/Onboarding.vue";
 export default {
+  components: { Onboarding },
   data() {
     return {
       loggedInItems: [
@@ -91,6 +109,7 @@ export default {
     ...mapActions({
       logout: "user/logout",
       showToast: "ui/showToast",
+      togglePageNav: "ui/togglePageNav",
     }),
     userLogout() {
       this.$router.push({ name: "pages.home" });
@@ -101,6 +120,14 @@ export default {
         sclass: "info",
         timeout: 4000,
       });
+    },
+    showDialog(ref, value) {
+      const dialog = this.$refs[ref];
+      dialog.showDialog(value);
+    },
+    updateProfile() {
+      this.togglePageNav(false);
+      this.showDialog("onboarding", true);
     },
   },
 };

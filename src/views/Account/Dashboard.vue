@@ -34,7 +34,7 @@
               class="text-center"
             >
               <v-alert prominent type="info" color="primary" class="sharp">
-                <v-row align="center">
+                <v-row align="center" justify="center">
                   <v-col
                     ><strong>Your account is Unverified!</strong
                     ><br v-if="!$vuetify.breakpoint.xs" />

@@ -15,7 +15,7 @@
             ><v-icon>mdi-window-close</v-icon></v-btn
           >
         </v-card-title>
-        <v-window v-model="profileMachine.value">
+        <v-window touchless v-model="profileMachine.value">
           <v-window-item :value="1">
             <v-card-text class="px-8 pt-8 text-center">
               <p class="font-weight-black black--text display-1">
@@ -103,11 +103,23 @@
                 width="320"
                 class="mx-auto"
               ></v-img>
-              <p class="headline mt-6 px-16">
+              <p
+                class="headline mt-6"
+                :class="$vuetify.breakpoint.xs ? 'px-0' : 'px-16'"
+              >
                 Awesome! Your Profile is complete and your account verified.
               </p>
               <v-divider></v-divider>
-              <div style="display: flex" class="pr-8 pt-4">
+              <div style="display: flex" class="pr-0 pt-4">
+                <v-btn
+                  large
+                  text
+                  class="sharp"
+                  color="primary"
+                  @click="updateProfile($event, 'goBack')"
+                >
+                  <v-icon left>mdi-chevron-double-left</v-icon> Back</v-btn
+                >
                 <v-spacer></v-spacer>
 
                 <v-btn large class="sharp secondary" @click="dialog = false"
@@ -150,6 +162,8 @@ export default {
         } else {
           profileMachine.setState("SIGNEDUP");
         }
+      } else {
+        this.getActivity();
       }
     },
   },
@@ -157,6 +171,7 @@ export default {
     ...mapActions({
       showToast: "ui/showToast",
       showGlobalLoader: "ui/showGlobalLoader",
+      getActivity: "user/getUserActivity",
     }),
     showDialog(value) {
       this.dialog = value;
