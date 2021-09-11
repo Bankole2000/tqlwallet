@@ -20,6 +20,39 @@ export default {
     // }
     // return { data, error };
   },
+  generateStatementPDF: async ({ rootState }, statement) => {
+    statement.forEach(txn => {
+      if (txn.amount < 0) {
+        txn.amount *= -1
+      }
+      txn.createdAt = new Date(txn.createdAt).toLocaleString(['en-US'], {
+        month: "short",
+        day: "2-digit",
+        weekday: "short",
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      })
+    });
+    const res = await API.Transactions.generateStatementPDF(statement, rootState.user.token);
+    const { error } = await res.json();
+    if (error) {
+      console.log({ error });
+      return false;
+    } else {
+      const pdfRes = await API.Transactions.getStatementPDF(rootState.user.token)
+      console.log({ pdfRes });
+      const data = await pdfRes.blob();
+      const pdfBlob = new Blob([data], { type: 'application/pdf' })
+      console.log({ pdfBlob });
+      // pdfRes.data;
+      const pdfURL = URL.createObjectURL(pdfBlob);
+      return pdfURL;
+    }
+  },
+  getStatementPDF: async ({ rootState }) => {
+    console.log({ token: rootState.user.token })
+  },
   getUserTransactions: async ({ commit, rootState }) => {
     const authToken = localStorage.getItem('tqlWalletAppToken');
     console.log({ authToken, rootState });

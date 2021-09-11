@@ -18,6 +18,24 @@ export default {
       },
     })
   },
+  generateStatementPDF: async (statement, token) => {
+    return fetch(`${process.env.VUE_APP_API_BASE_URL}/print-statement`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(statement)
+    })
+  },
+  getStatementPDF: async (token) => {
+    return fetch(`${process.env.VUE_APP_API_BASE_URL}/print-statement`, {
+      method: 'GET',
+      headers: {
+        authorization: `Bearer ${token}`,
+      }
+    })
+  },
   getTransactions: async (token) => {
     return fetch(`${process.env.VUE_APP_API_BASE_URL}/transactions`, {
       method: 'GET',

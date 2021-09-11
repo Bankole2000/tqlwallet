@@ -96,6 +96,20 @@
         </v-col>
       </v-row>
       <v-row v-if="statement.length">
+        <v-col cols="12">
+          <div style="display: flex; justify-content: center">
+            <v-btn
+              :block="$vuetify.breakpoint.xs"
+              class="sharp text-capitalize mx-auto"
+              color="secondary"
+              :loading="downloading"
+              :disabled="downloading"
+              @click="printStatement"
+              x-large
+              ><v-icon left>mdi-printer</v-icon> Download / print</v-btn
+            >
+          </div>
+        </v-col>
         <v-col cols="12" class="py-0" v-for="(txn, i) in statement" :key="i">
           <v-slide-y-transition>
             <v-card hover tile class="px-3 my-6">
@@ -182,6 +196,7 @@ export default {
       end: "",
       endDialog: false,
       statement: [],
+      downloading: false,
     };
   },
   computed: {
@@ -193,6 +208,7 @@ export default {
   methods: {
     ...mapActions({
       getStatementByPeriod: "transactions/getStatementByPeriod",
+      generateStatementPDF: "transactions/generateStatementPDF",
       showGlobalLoader: "ui/showGlobalLoader",
       showToast: "ui/showToast",
     }),
@@ -220,6 +236,24 @@ export default {
           timeout: 4000,
         });
       }
+      this.showGlobalLoader({ show: false, message: "" });
+    },
+    async printStatement() {
+      this.downloading = true;
+      this.showGlobalLoader({ show: true, message: "Printing..." });
+      console.log({ statement: this.statement });
+      const pdf = await this.generateStatementPDF(this.statement);
+      if (pdf) {
+        window.open(pdf, "_blank");
+        // const fileLink = document.createElement("a");
+
+        // fileLink.href = pdf;
+        // fileLink.setAttribute("download", "file.pdf");
+        // document.body.appendChild(fileLink);
+
+        // fileLink.click();
+      }
+      this.downloading = false;
       this.showGlobalLoader({ show: false, message: "" });
     },
   },
