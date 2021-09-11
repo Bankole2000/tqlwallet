@@ -88,7 +88,7 @@
                 @click="showDialog('onboarding', true)"
                 color="secondary"
                 text
-                class="sharp white--text my-4 text-capitalize"
+                class="sharp white--text text-capitalize"
                 depressed
                 large
               >
