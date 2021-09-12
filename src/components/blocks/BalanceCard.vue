@@ -20,7 +20,7 @@
         <h3 class="px-4">A/C Balance</h3>
         <v-card-text>
           <v-sparkline
-            :value="value"
+            :value="graphValues"
             :gradient="gradient"
             :smooth="radius || false"
             :padding="padding"
@@ -63,12 +63,49 @@ export default {
       fill: false,
       type: "trend",
       autoLineWidth: false,
+      txnRange: 14,
     };
   },
   computed: {
     ...mapGetters({
       user: "user/user",
+      transactions: "transactions/transactions",
     }),
+    graphValues() {
+      // result = Array(7).fill(0);
+      let result = [];
+      if (this.transactions) {
+        const txnAmounts = this.transactions.map((txn) => txn.amount).reverse();
+        if (this.transactions.length > this.txnRange) {
+          const recentTransactions = txnAmounts.slice(
+            txnAmounts.length - this.txnRange
+          );
+          recentTransactions.forEach((amnt, i) => {
+            if (i == 0) {
+              result[i] = amnt;
+            } else {
+              result[i] = result[i - 1] + amnt;
+            }
+          });
+          return result;
+        } else {
+          let newTxns = [];
+          txnAmounts.forEach((amnt, i) => {
+            if (i == 0) {
+              newTxns[i] = amnt;
+            } else {
+              newTxns[i] = newTxns[i - 1] + amnt;
+            }
+          });
+          result = [
+            ...Array(this.txnRange - txnAmounts.length).fill(0),
+            ...newTxns,
+          ];
+          return result;
+        }
+      }
+      return Array(this.txnRange).fill(0);
+    },
   },
 };
 </script>

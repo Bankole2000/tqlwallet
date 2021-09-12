@@ -20,7 +20,7 @@
         <h3 class="px-4">Activities</h3>
         <v-card-text>
           <v-sparkline
-            :value="value"
+            :value="graphValues"
             :gradient="gradient"
             :smooth="radius || false"
             :padding="padding"
@@ -62,12 +62,53 @@ export default {
       fill: false,
       type: "trend",
       autoLineWidth: false,
+      dayRange: 7,
     };
   },
   computed: {
     ...mapGetters({
       activity: "user/activity",
     }),
+    graphValues() {
+      let result = [];
+      if (this.activity && this.activity.length) {
+        const startDate = Date.now() - this.dayRange * 86400000;
+
+        const dateObj = {};
+        const dayRange = this.dayRange;
+        for (let i = 0; i <= dayRange; i++) {
+          let actDate = this.setDates(startDate, i);
+          dateObj[actDate] = [];
+        }
+
+        this.activity.forEach((act) => {
+          let actDate = this.getDateOnly(act.timestamp);
+          console.log(actDate);
+          if (actDate in dateObj) {
+            dateObj[actDate].push(act);
+          }
+        });
+        Object.keys(dateObj).forEach((date, i) => {
+          result[i] = dateObj[date].length;
+        });
+        return result;
+      }
+      return Array(7).fill(0);
+    },
+  },
+  methods: {
+    setDates(date, offset) {
+      let newDate = new Date(Date.parse(new Date(date)) + offset * 86400000);
+      return `${newDate.getFullYear()}-${
+        newDate.getMonth() + 1
+      }-${newDate.getDate()}`;
+    },
+    getDateOnly(dateLike) {
+      let newDate = new Date(dateLike);
+      return `${newDate.getFullYear()}-${
+        newDate.getMonth() + 1
+      }-${newDate.getDate()}`;
+    },
   },
 };
 </script>
