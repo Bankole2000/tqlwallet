@@ -17,7 +17,22 @@
           <v-spacer></v-spacer>
           <!-- <v-btn large icon><v-icon>mdi-dots-vertical</v-icon></v-btn> -->
         </v-card-title>
-        <h3 class="px-4">A/C Balance</h3>
+        <h3 class="px-4">
+          A/C Balance
+
+          <small class="font-weight-light"
+            >({{ trendPercentage }}%<v-icon
+              class="pb-1 success--text"
+              v-if="trendPercentage > 0"
+              >mdi-arrow-up-thick</v-icon
+            >
+            <v-icon class="pb-1 error--text" v-else-if="trendPercentage < 0"
+              >mdi-arrow-down-thick</v-icon
+            >
+            <v-icon class="pb-1 info--text" v-else>mdi-arrow-right-thick</v-icon
+            >)</small
+          >
+        </h3>
         <v-card-text>
           <v-sparkline
             :value="graphValues"
@@ -105,6 +120,16 @@ export default {
         }
       }
       return Array(this.txnRange).fill(0);
+    },
+    trendPercentage() {
+      if (this.graphValues.length) {
+        let current, previous;
+        current = this.graphValues[this.graphValues.length - 1];
+        previous = this.graphValues[this.graphValues.length - 2];
+        const difference = ((current - previous) / (previous || 1)) * 100;
+        return Math.floor(difference);
+      }
+      return 0;
     },
   },
 };
